@@ -40,11 +40,11 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
         android:text="Headache pills"
         android:textColor="#000000"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="45dp"/>
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="20dp"
-        android:text="Contraindications for use, select the text box and double click. sed egestas dolor. Fusce et ex eu mauris egestas faucibus id non purus." />
+        android:text="COST: 100$" />
 
     <Button
         android:id="@+id/button"

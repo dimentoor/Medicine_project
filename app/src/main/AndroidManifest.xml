@@ -9,22 +9,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Singin_screen">
+
         <activity
-            android:name=".detail_card_screen"
+            android:name=".TransitionActivity"
             android:exported="false" />
         <activity
-            android:name=".splash_screen"
+            android:name=".BiologicallyActiveAdditivesActivity"
             android:exported="false" />
+        <activity
+            android:name=".DisinfectantsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MedicinesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailCardScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Splash_screenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" >
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+        </activity>
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
+
     </application>
 
 </manifest>
