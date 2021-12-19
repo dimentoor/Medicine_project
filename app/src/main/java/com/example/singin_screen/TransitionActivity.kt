@@ -14,10 +14,10 @@ class TransitionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.BiologicallyActiveAdditives.setOnClickListener {
-            Intent(this, BiologicallyActiveAdditivesActivity::class.java)
+            startActivity(Intent(this, BiologicallyActiveAdditivesActivity::class.java))
         }
         binding.Disinfectants.setOnClickListener {
-            Intent(this, DisinfectantsActivity::class.java)
+            startActivity(Intent(this, DisinfectantsActivity::class.java))
         }
         binding.Medicines.setOnClickListener {
             startActivity(Intent(this, MedicinesActivity::class.java))
