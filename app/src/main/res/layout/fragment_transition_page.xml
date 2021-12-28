@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     android:background="#F2F0F0">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#2C3D9A"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#2C3D9A"
+            android:backgroundTint="#2C3D9A"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/back">
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
     <Button
         android:id="@+id/BiologicallyActiveAdditives"
         android:layout_width="wrap_content"

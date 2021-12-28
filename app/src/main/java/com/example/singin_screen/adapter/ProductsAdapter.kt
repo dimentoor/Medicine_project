@@ -23,7 +23,7 @@ class ProductsAdapter (
               val layoutInflater = LayoutInflater.from(parent.context)
               return  MedicinesVH(
                       layoutInflater.inflate(
-                              R.layout.activity_medicines,parent,false), listener
+                              R.layout.fragment_medicines,parent,false), listener
               )
         }
 

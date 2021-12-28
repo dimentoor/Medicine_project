@@ -3,33 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/drawable/medicines.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/activity_detail_card_screen.xml" value="0.21557971014492755" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/activity_medicines.xml" value="0.5" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/activity_splash_screen.xml" value="0.21557971014492755" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/rv_medicines.xml" value="0.33" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/8/singin_screen/app/src/main/res/layout/transition_page.xml" value="0.21557971014492755" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/drawable/medicines.xml" value="0.21145833333333333" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_detail_card_screen.xml" value="0.33" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_medicines.xml" value="0.5" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_profile_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/medicines.xml" value="0.20018115942028986" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/rv_medicines.xml" value="0.30572916666666666" />
-        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/test1_.xml" value="0.5" />
-        <entry key="..\:/Users/Dmitry/Desktop/8/singin_screen/app/src/main/res/drawable/medicines.xml" value="0.3177083333333333" />
-        <entry key="..\:/Users/Dmitry/Desktop/8/singin_screen/app/src/main/res/layout/activity_medicines.xml" value="0.3015625" />
-        <entry key="..\:/Users/Dmitry/Desktop/8/singin_screen/app/src/main/res/layout/rv_medicines.xml" value="0.3015625" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/drawable/ic_search.xml" value="0.3828125" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/drawable/medicines.xml" value="0.3828125" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_detail_card_screen.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/fragment_login.xml" value="0.14792299898682879" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/fragment_medicines.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/fragment_product_details.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/fragment_rv_medicines.xml" value="0.17097264437689969" />
+        <entry key="..\:/Users/Dmitry/AndroidStudioProjects/singin_screen/app/src/main/res/layout/fragment_transition_page.xml" value="0.1778115501519757" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/drawable/medicines.xml" value="0.24351851851851852" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_detail_card_screen.xml" value="0.358695652173913" />
         <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_medicines.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/rv_medicines.xml" value="0.33" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_medicines.xml" value="0.17603850050658562" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/fragment_detail_card_screen.xml" value="0.287962962962963" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/fragment_main.xml" value="0.25" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/fragment_product_details.xml" value="0.33" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/fragment_rv_medicines.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/rv_medicines.xml" value="0.17603850050658562" />
         <entry key="..\:/Users/baraboshkinda/Desktop/singin_screen/app/src/main/res/layout/transition_page.xml" value="0.36666666666666664" />
       </map>
     </option>

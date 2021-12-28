@@ -37,5 +37,5 @@
         android:paddingBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:itemCount="10"
-        tools:listitem="@layout/activity_medicines" />
+        tools:listitem="@layout/fragment_medicines" />
 </androidx.constraintlayout.widget.ConstraintLayout>
