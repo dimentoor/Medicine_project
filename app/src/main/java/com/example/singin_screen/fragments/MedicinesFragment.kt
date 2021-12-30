@@ -4,15 +4,18 @@ package com.example.singin_screen.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.singin_screen.MainActivity
-import com.example.singin_screen.R
+import com.example.singin_screen.*
 import com.example.singin_screen.adapter.ProductsAdapter
 import com.example.singin_screen.databinding.FragmentRvMedicinesBinding
+import com.example.singin_screen.model.Products
 import com.example.singin_screen.network.NetworkService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
 
 
@@ -47,36 +50,69 @@ class MedicinesFragment : Fragment(R.layout.fragment_rv_medicines) {
 
     private lateinit var binding: FragmentRvMedicinesBinding
 
+    @ExperimentalSerializationApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRvMedicinesBinding.bind(view)
 
-        //загружаем данные
-        loadMedicines()
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            //загружаем данные при свайпе
-            binding.swipeRefreshLayout.isRefreshing = true
-            loadMedicines()
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
-
-    }
-//передаем данные на фрагмент
-    @ExperimentalSerializationApi
-    private fun loadMedicines() {
-        scope.launch {
-            val medicines = NetworkService.loadMedicines()
-            binding.rvMedicines.layoutManager = LinearLayoutManager(context)
-            binding.rvMedicines.adapter =
-                ProductsAdapter(medicines) { (name,description,iconUrl) ->
-
-                    (activity as MainActivity).navigateToFragment(
-                        ProductDetailsFragment.newInstance(name, description, iconUrl)
-                    )
+        merge(
+            flowOf(Unit),
+            binding.swipeRefreshLayout.onRefreshFlow(),
+            binding.buttonRefresh.onClickFlow()
+        ).flatMapLatest { loadMedicines() }
+            .distinctUntilChanged()
+            .onEach {
+                when (it) {
+                    is ScreenState.DataLoaded -> {
+                        setLoading(false)
+                        setError(null)
+                        setData(it.products)
+                    }
+                    is ScreenState.Error -> {
+                        setLoading(false)
+                        setError(it.error)
+                        setData(null)
+                    }
+                    is ScreenState.Loading -> {
+                        setLoading(true)
+                        setError(null)
+                    }
                 }
-            binding.progressBar.visibility = View.GONE
-            binding.swipeRefreshLayout.isRefreshing = false
+            }.launchIn(lifecycleScope)
+    }
+
+    @ExperimentalSerializationApi
+    private fun loadMedicines() = flow {
+        emit(ScreenState.Loading)
+        val medicines = NetworkService.loadMedicines()
+        emit(ScreenState.DataLoaded(medicines))
+    }.catch {
+        emit(ScreenState.Error(getString(R.string.error)))
+    }
+
+    private fun setLoading(isLoading: Boolean) = with(binding) {
+        progressBar.isVisible = isLoading && !rvMedicines.isVisible
+        swipeRefreshLayout.isRefreshing = isLoading && rvMedicines.isVisible
+    }
+
+    private fun setData(medicines: List<Products>?) = with(binding) {
+        swipeRefreshLayout.isVisible = medicines != null
+        binding.rvMedicines.layoutManager = LinearLayoutManager(context)
+        rvMedicines.adapter = ProductsAdapter(
+            medicines ?: emptyList()
+        ) { (name,description,iconUrl) ->
+            (activity as MainActivity).navigateToFragment(
+                ProductDetailsFragment.newInstance(
+                    name,description,iconUrl
+                )
+            )
         }
     }
+
+    private fun setError(message: String?) = with(binding) {
+        errorLayout.isVisible = message != null
+        tvError.text = message
+    }
+
 }
 

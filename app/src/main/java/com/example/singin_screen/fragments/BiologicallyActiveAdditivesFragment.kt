@@ -4,15 +4,18 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.singin_screen.MainActivity
-import com.example.singin_screen.R
+import com.example.singin_screen.*
 import com.example.singin_screen.adapter.ProductsAdapter
 import com.example.singin_screen.databinding.FragmentRvMedicinesBinding
+import com.example.singin_screen.model.Products
 import com.example.singin_screen.network.NetworkService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -48,38 +51,71 @@ class BiologicallyActiveAdditivesFragment : Fragment(R.layout.fragment_rv_medici
 
     private lateinit var binding: FragmentRvMedicinesBinding
 
-
+    @ExperimentalSerializationApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRvMedicinesBinding.bind(view)
 
-        //загружаем данные
-        loadBiologicalactadd()
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            //загружаем данные при свайпе
-            binding.swipeRefreshLayout.isRefreshing = true
-            loadBiologicalactadd()
-            binding.swipeRefreshLayout.isRefreshing = false
+        merge(
+            flowOf(Unit),
+            binding.swipeRefreshLayout.onRefreshFlow(),
+            binding.buttonRefresh.onClickFlow()
+        ).flatMapLatest { loadBiologicalactadd() }
+            .distinctUntilChanged()
+            .onEach {
+                when (it) {
+                    is ScreenState.DataLoaded -> {
+                        setLoading(false)
+                        setError(null)
+                        setData(it.products)
+                    }
+                    is ScreenState.Error -> {
+                        setLoading(false)
+                        setError(it.error)
+                        setData(null)
+                    }
+                    is ScreenState.Loading -> {
+                        setLoading(true)
+                        setError(null)
+                    }
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    @ExperimentalSerializationApi
+    private fun loadBiologicalactadd() = flow {
+        emit(ScreenState.Loading)
+        val biologicalactadd = NetworkService.loadBiologicalactadd()
+        emit(ScreenState.DataLoaded(biologicalactadd))
+    }.catch {
+        emit(ScreenState.Error(getString(R.string.error)))
+    }
+
+    private fun setLoading(isLoading: Boolean) = with(binding) {
+        progressBar.isVisible = isLoading && !rvMedicines.isVisible
+        swipeRefreshLayout.isRefreshing = isLoading && rvMedicines.isVisible
+    }
+
+    private fun setData(biologicalactadd: List<Products>?) = with(binding) {
+        swipeRefreshLayout.isVisible = biologicalactadd != null
+        binding.rvMedicines.layoutManager = LinearLayoutManager(context)
+        rvMedicines.adapter = ProductsAdapter(
+            biologicalactadd ?: emptyList()
+        ) { (name,description,iconUrl) ->
+            (activity as MainActivity).navigateToFragment(
+                ProductDetailsFragment.newInstance(
+                    name,description,iconUrl
+                )
+            )
         }
     }
 
-    //передаем данные на фрагмент
-    @ExperimentalSerializationApi
-    private fun loadBiologicalactadd() {
-        scope.launch {
-            val medicines = NetworkService.loadBiologicalactadd()
-            binding.rvMedicines.layoutManager = LinearLayoutManager(context)
-            binding.rvMedicines.adapter =
-                ProductsAdapter(medicines) { (name,description,iconUrl) ->
-
-                    (activity as MainActivity).navigateToFragment(
-                        ProductDetailsFragment.newInstance(name, description, iconUrl)
-                    )
-                }
-            binding.progressBar.visibility = View.GONE
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
+    private fun setError(message: String?) = with(binding) {
+        errorLayout.isVisible = message != null
+        tvError.text = message
     }
 }
+
+
 
 

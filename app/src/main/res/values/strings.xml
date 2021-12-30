@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">singin_screen</string>
     <string name="error">ERROR</string>
+    <string name="refresh">RELOAD</string>
 </resources>

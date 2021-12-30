@@ -3,15 +3,18 @@ package com.example.singin_screen.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.singin_screen.MainActivity
-import com.example.singin_screen.R
+import com.example.singin_screen.*
 import com.example.singin_screen.adapter.ProductsAdapter
 import com.example.singin_screen.databinding.FragmentRvMedicinesBinding
+import com.example.singin_screen.model.Products
 import com.example.singin_screen.network.NetworkService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
 
 
@@ -52,31 +55,64 @@ class DisinfectantsFragment : Fragment(R.layout.fragment_rv_medicines) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRvMedicinesBinding.bind(view)
 
-        //загружаем данные
-        loadDisinfectants()
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            //загружаем данные при свайпе
-            binding.swipeRefreshLayout.isRefreshing = true
-            loadDisinfectants()
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
-    }
-
-    //передаем данные на фрагмент
-    @ExperimentalSerializationApi
-    private fun loadDisinfectants() {
-        scope.launch {
-            val medicines = NetworkService.loadDisinfectants()
-            binding.rvMedicines.layoutManager = LinearLayoutManager(context)
-            binding.rvMedicines.adapter =
-                ProductsAdapter(medicines) { (name,description,iconUrl) ->
-
-                    (activity as MainActivity).navigateToFragment(
-                        ProductDetailsFragment.newInstance(name, description, iconUrl)
-                    )
+        merge(
+            flowOf(Unit),
+            binding.swipeRefreshLayout.onRefreshFlow(),
+            binding.buttonRefresh.onClickFlow()
+        ).flatMapLatest { loadDisinfectants() }
+            .distinctUntilChanged()
+            .onEach {
+                when (it) {
+                    is ScreenState.DataLoaded -> {
+                        setLoading(false)
+                        setError(null)
+                        setData(it.products)
+                    }
+                    is ScreenState.Error -> {
+                        setLoading(false)
+                        setError(it.error)
+                        setData(null)
+                    }
+                    is ScreenState.Loading -> {
+                        setLoading(true)
+                        setError(null)
+                    }
                 }
-            binding.progressBar.visibility = View.GONE
-            binding.swipeRefreshLayout.isRefreshing = false
+            }.launchIn(lifecycleScope)
+    }
+
+    @ExperimentalSerializationApi
+    private fun loadDisinfectants() = flow {
+        emit(ScreenState.Loading)
+        val disinfectants = NetworkService.loadDisinfectants()
+        emit(ScreenState.DataLoaded(disinfectants))
+    }.catch {
+        emit(ScreenState.Error(getString(R.string.error)))
+    }
+
+    private fun setLoading(isLoading: Boolean) = with(binding) {
+        progressBar.isVisible = isLoading && !rvMedicines.isVisible
+        swipeRefreshLayout.isRefreshing = isLoading && rvMedicines.isVisible
+    }
+
+    private fun setData(disinfectants: List<Products>?) = with(binding) {
+        swipeRefreshLayout.isVisible = disinfectants != null
+        binding.rvMedicines.layoutManager = LinearLayoutManager(context)
+        rvMedicines.adapter = ProductsAdapter(
+            disinfectants ?: emptyList()
+        ) { (name,description,iconUrl) ->
+            (activity as MainActivity).navigateToFragment(
+                ProductDetailsFragment.newInstance(
+                    name,description,iconUrl
+                )
+            )
         }
     }
+
+    private fun setError(message: String?) = with(binding) {
+        errorLayout.isVisible = message != null
+        tvError.text = message
+    }
+
+
 }
