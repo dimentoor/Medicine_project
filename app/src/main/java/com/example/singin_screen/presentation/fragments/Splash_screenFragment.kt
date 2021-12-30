@@ -1,6 +1,5 @@
-package com.example.singin_screen.fragments
+package com.example.singin_screen.presentation.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment

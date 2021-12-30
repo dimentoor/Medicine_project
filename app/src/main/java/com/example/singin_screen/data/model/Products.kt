@@ -1,4 +1,4 @@
-package com.example.singin_screen.model
+package com.example.singin_screen.data.model
 
 import kotlinx.serialization.Serializable
 

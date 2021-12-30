@@ -1,4 +1,4 @@
-package com.example.singin_screen.network
+package com.example.singin_screen.domain.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi

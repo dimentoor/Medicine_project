@@ -1,6 +1,6 @@
-package com.example.singin_screen
+package com.example.singin_screen.presentation.viewmodel
 
-import com.example.singin_screen.model.Products
+import com.example.singin_screen.data.model.Products
 
 sealed class ScreenState {
     data class DataLoaded(val products: List<Products>) : ScreenState()

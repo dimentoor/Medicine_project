@@ -1,4 +1,4 @@
-package com.example.singin_screen.adapter
+package com.example.singin_screen.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.singin_screen.R
-import com.example.singin_screen.model.Products
+import com.example.singin_screen.data.model.Products
 
 typealias OnProductsClickListener = (Products) -> Unit
 

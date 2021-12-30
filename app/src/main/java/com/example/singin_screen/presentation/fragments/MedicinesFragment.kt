@@ -1,4 +1,5 @@
-package com.example.singin_screen.fragments
+package com.example.singin_screen.presentation.fragments
+
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,58 +9,42 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.singin_screen.*
-import com.example.singin_screen.adapter.ProductsAdapter
+import com.example.singin_screen.presentation.adapter.ProductsAdapter
 import com.example.singin_screen.databinding.FragmentRvMedicinesBinding
-import com.example.singin_screen.model.Products
-import com.example.singin_screen.network.NetworkService
+import com.example.singin_screen.data.model.Products
+import com.example.singin_screen.domain.network.NetworkService
+import com.example.singin_screen.presentation.MainActivity
+import com.example.singin_screen.presentation.viewmodel.ScreenState
+import com.example.singin_screen.presentation.viewmodel.ViewModelDisinfectants
+import com.example.singin_screen.presentation.viewmodel.ViewModelMedicines
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
 
 
-class DisinfectantsFragment : Fragment(R.layout.fragment_rv_medicines) {
+class MedicinesFragment : Fragment(R.layout.fragment_rv_medicines) {
 
-
-    //ловим необработанные ошибки
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { context, exception ->
-        binding.progressBar.visibility = View.GONE
-        binding.rvMedicines.adapter =
-            ProductsAdapter(listOf()) {}
-        binding.swipeRefreshLayout.isRefreshing = false
-        Snackbar.make(//окно с ошибкой
-            requireView(),
-            getString(R.string.error),
-            Snackbar.LENGTH_SHORT
-        ).setBackgroundTint(Color.parseColor("#ED4337"))
-            .setActionTextColor(Color.parseColor("#FFFFFF"))
-            .show()
-    }
-    //всплывающее окно
-    private val scope =
-        CoroutineScope(Dispatchers.Main + SupervisorJob() + coroutineExceptionHandler)
+    private lateinit var binding: FragmentRvMedicinesBinding
+    private val viewModel by lazy { ViewModelMedicines(requireContext(), lifecycleScope) }
 
 
     companion object{
-        private const val KEY_NAME = "name"
-        private const val KEY_DESCRIPTION = "description"
-        private const val KEY_ICON_RES_ID = "iconResID"
 
-        fun newInstance() = DisinfectantsFragment()
+        fun newInstance() = MedicinesFragment()
     }
 
-    private lateinit var binding: FragmentRvMedicinesBinding
 
     @ExperimentalSerializationApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRvMedicinesBinding.bind(view)
 
-        merge(
+        /*merge(
             flowOf(Unit),
             binding.swipeRefreshLayout.onRefreshFlow(),
             binding.buttonRefresh.onClickFlow()
-        ).flatMapLatest { loadDisinfectants() }
+        ).flatMapLatest { loadMedicines() }
             .distinctUntilChanged()
             .onEach {
                 when (it) {
@@ -78,28 +63,52 @@ class DisinfectantsFragment : Fragment(R.layout.fragment_rv_medicines) {
                         setError(null)
                     }
                 }
-            }.launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)*/
+        if (savedInstanceState == null ){
+            viewModel.loadData()
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.loadData() }
+        binding.buttonRefresh.setOnClickListener{ viewModel.loadData()}
+        viewModel.screenState.onEach {
+            when (it) {
+                is ScreenState.DataLoaded ->
+                {
+                    setLoading(false)
+                    setError(null)
+                    setData(it.products)
+                }
+                is ScreenState.Error -> {
+                    setLoading(false)
+                    setError(it.error)
+                    setData(null)
+                }
+                is ScreenState.Loading -> {
+                    setLoading(true)
+                    setError(null)
+                }
+            }
+        }.launchIn(lifecycleScope)
     }
 
-    @ExperimentalSerializationApi
-    private fun loadDisinfectants() = flow {
+   /* @ExperimentalSerializationApi
+    private fun loadMedicines() = flow {
         emit(ScreenState.Loading)
-        val disinfectants = NetworkService.loadDisinfectants()
-        emit(ScreenState.DataLoaded(disinfectants))
+        val medicines = NetworkService.loadMedicines()
+        emit(ScreenState.DataLoaded(medicines))
     }.catch {
         emit(ScreenState.Error(getString(R.string.error)))
-    }
+    }*/
 
     private fun setLoading(isLoading: Boolean) = with(binding) {
         progressBar.isVisible = isLoading && !rvMedicines.isVisible
         swipeRefreshLayout.isRefreshing = isLoading && rvMedicines.isVisible
     }
 
-    private fun setData(disinfectants: List<Products>?) = with(binding) {
-        swipeRefreshLayout.isVisible = disinfectants != null
+    private fun setData(medicines: List<Products>?) = with(binding) {
+        swipeRefreshLayout.isVisible = medicines != null
         binding.rvMedicines.layoutManager = LinearLayoutManager(context)
         rvMedicines.adapter = ProductsAdapter(
-            disinfectants ?: emptyList()
+            medicines ?: emptyList()
         ) { (name,description,iconUrl) ->
             (activity as MainActivity).navigateToFragment(
                 ProductDetailsFragment.newInstance(
@@ -114,5 +123,5 @@ class DisinfectantsFragment : Fragment(R.layout.fragment_rv_medicines) {
         tvError.text = message
     }
 
-
 }
+

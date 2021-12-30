@@ -1,12 +1,10 @@
-package com.example.singin_screen.fragments
+package com.example.singin_screen.presentation.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.singin_screen.MainActivity
+import com.example.singin_screen.presentation.MainActivity
 import com.example.singin_screen.R
-import com.example.singin_screen.databinding.FragmentLoginBinding
 import com.example.singin_screen.databinding.FragmentTransitionPageBinding
 
 

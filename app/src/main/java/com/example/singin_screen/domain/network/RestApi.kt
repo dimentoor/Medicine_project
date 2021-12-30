@@ -1,6 +1,6 @@
-package com.example.singin_screen.network
+package com.example.singin_screen.domain.network
 
-import com.example.singin_screen.model.Products
+import com.example.singin_screen.data.model.Products
 import retrofit2.http.GET
 
 interface RestApi {
