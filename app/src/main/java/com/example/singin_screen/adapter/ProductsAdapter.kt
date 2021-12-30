@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.singin_screen.R
 import com.example.singin_screen.model.Products
 
@@ -35,7 +36,7 @@ class ProductsAdapter (
         view : View,
         listener : OnProductsClickListener
     ):RecyclerView.ViewHolder(view){
-        private val inCover = view.findViewById<ImageView>(R.id.iv_item)
+        private val ivCover = view.findViewById<ImageView>(R.id.iv_item)
         private val tvName = view.findViewById<TextView>(R.id.tv_title)
         private val tvDescription = view.findViewById<TextView>(R.id.tv_description)
 
@@ -46,11 +47,18 @@ class ProductsAdapter (
         }
 
         fun bind(product : Products){
+
             this.product = product
             tvName.text = product.name
             tvDescription.text = product.description
             // tvCost
-            inCover.setImageResource(product.picture_medicines)
+            //inCover.setImageResource(product.iconUrl)
+
+            Glide.with(itemView.context)
+                .load(product.iconUrl)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(ivCover)
         }
     }
 }

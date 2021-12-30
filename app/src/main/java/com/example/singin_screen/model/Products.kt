@@ -1,10 +1,11 @@
 package com.example.singin_screen.model
 
-import androidx.annotation.DrawableRes
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class Products(
         val name : String,
         val description : String,
-        @DrawableRes
-        val picture_medicines : Int
+        val iconUrl : String
     )
