@@ -1,5 +1,6 @@
 package com.example.singin_screen.domain.network
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -7,7 +8,7 @@ import okhttp3.MediaType
 import retrofit2.Retrofit
 
 
-object NetworkService{
+class NetworkService(context: Context){
     @ExperimentalSerializationApi
     private val retrofit = Retrofit.Builder()
         .baseUrl(" https://demo4317619.mockable.io/")
